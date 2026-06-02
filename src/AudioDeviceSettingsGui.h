@@ -21,8 +21,10 @@ namespace nap
         class NAPAPI AudioDeviceSettingsGui : public gui::Gui
         {
             RTTI_ENABLE(gui::Gui)
+
         public:
             bool mShowInputs = true; ///< Property: 'ShowInputs' Indicates whether to show and control the input device as well
+        	bool mShowCPULoad = true; ///< Property: 'ShowCPUUsage'
 
             /**
              * Constructor
@@ -48,6 +50,8 @@ namespace nap
 			 * Draws the Gui for output device options only.
 			 */
 			void drawOutputGui();
+
+        	void drawCPULoad();
 			
 			/**
 			 * Draws error messages.

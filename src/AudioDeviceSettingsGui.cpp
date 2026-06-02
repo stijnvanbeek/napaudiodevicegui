@@ -13,6 +13,7 @@
 RTTI_BEGIN_CLASS_NO_DEFAULT_CONSTRUCTOR(nap::audio::AudioDeviceSettingsGui)
 		RTTI_CONSTRUCTOR(nap::Core&)
 		RTTI_PROPERTY("ShowInputs", &nap::audio::AudioDeviceSettingsGui::mShowInputs, nap::rtti::EPropertyMetaData::Default)
+		RTTI_PROPERTY("ShowCPULoad", &nap::audio::AudioDeviceSettingsGui::mShowCPULoad, nap::rtti::EPropertyMetaData::Default)
 RTTI_END_CLASS
 
 namespace nap
@@ -106,7 +107,7 @@ namespace nap
 				assert(mDriverSelection < mDrivers.size());
 				
 				// Combo box with all input devices for the chosen driver
-				if(showInputs)
+				if (showInputs)
 					change = drawInputComboBox(error_state) | change;
 
 				// Combo box with all output devices for the chosen driver
@@ -133,7 +134,15 @@ namespace nap
 				restartAudioDevice(error_state);
 		}
 
-		
+
+		void AudioDeviceSettingsGui::drawCPULoad()
+		{
+			int cpu = mAudioService->getCPULoad() * 100;
+			std::string text = "CPU " + std::to_string(cpu) + "%";
+			ImGui::Text(text.c_str());
+		}
+
+
 		void AudioDeviceSettingsGui::drawInputGui()
 		{
 			utility::ErrorState error_state;
@@ -376,6 +385,8 @@ namespace nap
 		void AudioDeviceSettingsGui::draw()
 		{
 			drawGui(mShowInputs);
+			if (mShowCPULoad)
+				drawCPULoad();
 			drawErrors();
 		}
 
